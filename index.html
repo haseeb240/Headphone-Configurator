@@ -1,0 +1,315 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Interactive headphone configurator with external API and Express backend">
+  <title>SoundX | Headphone Configurator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <a class="logo" href="#">SOUND<span>X</span></a>
+
+    <nav>
+      <a href="#configurator">Configurator</a>
+      <a href="#external-api">Product API</a>
+      <a href="#backend-form">Save Configuration</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">DESIGNED AROUND YOU</p>
+        <h1>Your sound.<br><span>Your style.</span></h1>
+        <p>
+          Customize your headphones, explore product information
+          from a public API, and send your configuration to a server.
+        </p>
+        <a class="button-link" href="#configurator">Customize yours</a>
+      </div>
+
+      <div class="hero-art">
+        <div class="orb"></div>
+
+        <div class="headphone-art">
+          <div class="headband"></div>
+          <div class="earcup left-cup"></div>
+          <div class="earcup right-cup"></div>
+        </div>
+
+        <span class="art-caption">SOUNDX / STUDIO SERIES</span>
+      </div>
+    </section>
+
+    <!-- QUESTION 1: HEADPHONE CONFIGURATOR -->
+    <section id="configurator" class="section">
+      <div class="section-heading">
+        <p class="eyebrow">01 / CUSTOMIZE</p>
+        <h2>Headphone Configurator</h2>
+        <p>
+          Select your favorite color, variant, and engraving.
+          Your preview and price will update automatically.
+        </p>
+      </div>
+
+      <div class="config-grid">
+
+        <!-- PRODUCT PREVIEW -->
+        <div class="preview-panel">
+          <div class="preview-topline">
+            <span>LIVE PREVIEW</span>
+            <span class="live-dot">● LIVE</span>
+          </div>
+
+          <div id="previewStage" class="preview-stage color-black">
+            <div class="headphone-art preview-headphones">
+              <div class="headband"></div>
+              <div class="earcup left-cup">
+                <span class="cup-mark">X</span>
+              </div>
+              <div class="earcup right-cup">
+                <span class="cup-mark">X</span>
+              </div>
+            </div>
+          </div>
+
+          <p id="previewName" class="preview-name">SoundX Standard</p>
+          <p id="previewDetails" class="muted">Black · Standard</p>
+          <p id="previewEngraving" class="engraving-preview">Your engraving</p>
+        </div>
+
+        <!-- CUSTOMIZATION CONTROLS -->
+        <div class="controls-panel">
+          <h3>Make it personal</h3>
+
+          <label for="colorSelect">Choose a color</label>
+
+          <div class="color-options">
+            <button type="button"
+                    class="swatch active"
+                    data-color="Black"
+                    aria-label="Black"
+                    title="Black"></button>
+
+            <button type="button"
+                    class="swatch white-swatch"
+                    data-color="White"
+                    aria-label="White"
+                    title="White"></button>
+
+            <button type="button"
+                    class="swatch blue-swatch"
+                    data-color="Blue"
+                    aria-label="Blue"
+                    title="Blue"></button>
+          </div>
+
+          <select id="colorSelect" name="color">
+            <option value="Black">Black</option>
+            <option value="White">White</option>
+            <option value="Blue">Blue</option>
+          </select>
+
+          <label for="variantSelect">Choose a variant</label>
+
+          <select id="variantSelect" name="variant">
+            <option value="Standard">Standard — $99.00</option>
+            <option value="Pro">Pro — $149.00</option>
+            <option value="Premium">Premium — $199.00</option>
+          </select>
+
+          <label for="engravingInput">Engraving (maximum 20 characters)</label>
+
+          <input
+            type="text"
+            id="engravingInput"
+            maxlength="20"
+            placeholder="Enter your name"
+          >
+
+          <div class="price-line">
+            <span>Estimated price</span>
+            <strong id="configPrice">$99.00</strong>
+          </div>
+
+          <button type="button" id="addToCart" class="primary-button">
+            Add configuration to cart
+          </button>
+
+          <p id="cartStatus" class="status" role="status" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <!-- CART -->
+      <div class="cart-panel">
+        <h3>Your Cart</h3>
+
+        <p id="cartEmpty" class="muted">
+          Your cart is empty. Customize your headphones and add them here.
+        </p>
+
+        <div id="cartItem" hidden>
+          <div>
+            <strong id="cartName">SoundX Standard</strong>
+            <p id="cartDescription" class="muted"></p>
+          </div>
+
+          <strong id="cartPrice">$99.00</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUESTION 2: PUBLIC API -->
+    <section id="external-api" class="section alternate-section">
+      <div class="section-heading">
+        <p class="eyebrow">02 / QUESTION 2</p>
+        <h2>Explore Products from a Public API</h2>
+
+        <p>
+          Use jQuery AJAX to fetch product data from the DummyJSON public API.
+          The returned information will be displayed below.
+        </p>
+      </div>
+
+      <button type="button" id="loadApiProduct" class="primary-button">
+        Load Product from Public API
+      </button>
+
+      <p id="apiStatus" class="status" role="status" aria-live="polite">
+        Ready to load product information.
+      </p>
+
+      <article class="api-product-card">
+        <img
+          id="apiProductImage"
+          src=""
+          alt="Product returned by the API"
+          hidden
+        >
+
+        <div class="api-product-info">
+          <p class="eyebrow">EXTERNAL API RESPONSE</p>
+
+          <h3 id="apiProductName">No product loaded yet</h3>
+
+          <p id="apiProductPrice" class="api-price"></p>
+
+          <p id="apiProductCategory" class="muted"></p>
+
+          <p id="apiProductDescription">
+            Click the button above to fetch a product.
+          </p>
+
+          <p id="apiProductRating" class="muted"></p>
+        </div>
+      </article>
+    </section>
+
+    <!-- QUESTION 3: EXPRESS BACKEND -->
+    <section id="backend-form" class="section">
+      <div class="section-heading">
+        <p class="eyebrow">03 / QUESTION 3</p>
+        <h2>Submit Your Configuration</h2>
+
+        <p>
+          Send your selected headphone options as JSON to the Node.js
+          and Express backend using a POST request.
+        </p>
+      </div>
+
+      <form id="configurationForm" class="backend-form">
+
+        <label for="configProductName">Product Name</label>
+        <input
+          type="text"
+          id="configProductName"
+          name="productName"
+          value="SoundX Studio Headphones"
+          required
+        >
+
+        <label for="configColor">Color</label>
+        <select id="configColor" name="color">
+          <option value="Black">Black</option>
+          <option value="White">White</option>
+          <option value="Blue">Blue</option>
+        </select>
+
+        <label for="configVariant">Variant</label>
+        <select id="configVariant" name="variant">
+          <option value="Standard">Standard</option>
+          <option value="Pro">Pro</option>
+          <option value="Premium">Premium</option>
+        </select>
+
+        <label for="configEngraving">Engraving</label>
+        <input
+          type="text"
+          id="configEngraving"
+          name="engraving"
+          maxlength="20"
+          placeholder="Optional engraving"
+        >
+
+        <label for="configQuantity">Quantity</label>
+        <input
+          type="number"
+          id="configQuantity"
+          name="quantity"
+          min="1"
+          max="10"
+          value="1"
+          required
+        >
+
+        <button type="submit" class="primary-button">
+          Submit Configuration to Server
+        </button>
+
+        <p id="configStatus" class="status" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <!-- PROMOTIONAL VIDEO -->
+    <section class="video-section">
+      <div>
+        <p class="eyebrow">SOUND IN MOTION</p>
+        <h2>Meet the Studio Series</h2>
+
+        <p>
+          Place your promotional video at
+          <strong>videos/headphones-promo.mp4</strong>.
+        </p>
+      </div>
+
+      <video controls preload="metadata">
+        <source src="videos/headphones-promo.mp4" type="video/mp4">
+        Your browser does not support HTML video.
+        Please check that the video file exists.
+      </video>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <a class="logo" href="#">SOUND<span>X</span></a>
+    <p>Student Project | jQuery AJAX | Node.js | Express</p>
+  </footer>
+
+  <!-- JQUERY LIBRARY: LOAD THIS FIRST -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+  <!-- YOUR JAVASCRIPT FILE: LOAD AFTER JQUERY -->
+  <script src="script.js"></script>
+
+</body>
+</html>
